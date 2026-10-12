@@ -1,6 +1,6 @@
 "use client";
 
-import * as S from "@/assets/css/Style.style";
+import * as S from "@/assets/css/Style.styles";
 
 export const SideBar = () => {
   return (

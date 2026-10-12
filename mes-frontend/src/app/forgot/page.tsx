@@ -1,41 +1,65 @@
 "use client";
 
-import * as S from "@/assets/css/Style.style";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import * as S from "@/assets/css/Style.styles";
 
 export default function ForgotPassword() {
-  return (
-    <S.Container>
-      <S.Card>
-        <S.ImageColumn/>
-        <S.FormColumn>
-          <S.Title>Forgot Your Password?</S.Title>
+  const router = useRouter();
+  const [email, setEmail] = useState("");
 
-          <S.Description>
+  const handleResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      await axios.post("/api/auth/forgot-password", {email});
+      alert("이메일로 임시 비밀번호가 발송되었습니다. 확인 후 로그인해주세요.");
+      router.push("/");
+    } catch (err: any) {
+      console.error("에러: ", err);
+      alert(err.response?.data || "메일 발송에 실패했습니다. 이메일을 확인해주세요.");
+    };
+  };
+
+  return (
+    <S.MemberContainer>
+      <S.MemberCard>
+        <S.MemberImageColumn/>
+        <S.MemberFormColumn>
+          <S.MemberTitle>Forgot Your Password?</S.MemberTitle>
+
+          <S.MemberDescription>
             We get it, stuff happens. Just enter your email address below 
             and we'll send you a link to reset your password!
-          </S.Description>
+          </S.MemberDescription>
 
-          <S.Form>
-            <S.Input
+          <S.MemberForm onSubmit={handleResetPassword}>
+            <S.MemberInput
             type="email"
-            id=""
-            placeholder="Enter Email Address..."/>
-            <S.Button type="submit">
+            placeholder="Enter Email Address..."
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required/>
+            <S.Button
+            $variant="primary"
+            $size="medium"
+            $fullWidth
+            type="submit">
               Reset Password
             </S.Button>
-          </S.Form>
+          </S.MemberForm>
 
-          <S.Divider/>
+          <S.MemberDivider/>
 
-          <S.StyledLink href="/member">
+          <S.MemberStyledLink href="/member">
             Create an Account!
-          </S.StyledLink>
+          </S.MemberStyledLink>
 
-          <S.StyledLink href="/">
+          <S.MemberStyledLink href="/">
             Already have an account? Login!
-          </S.StyledLink>
-        </S.FormColumn>
-      </S.Card>
-    </S.Container>
+          </S.MemberStyledLink>
+        </S.MemberFormColumn>
+      </S.MemberCard>
+    </S.MemberContainer>
   );
 };

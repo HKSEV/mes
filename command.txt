@@ -14,6 +14,10 @@ npx tsc --init
 
 오라클 통신용 공식 드라이버
 npm install express cors dotenv reflect-metadata typeorm oracledb
+npm install bcryptjs jsonwebtoken
+npm install -D @types/jsonwebtoken
+npm install prisma --save-dev
+npm install @prisma/client
 
 npm install -D nodemon ts-node
 npm install -D tsx

@@ -1,6 +1,6 @@
 "use client"
 
-import * as S from "@/assets/css/Common.style";
+import * as S from "@/assets/css/NavButton.styles";
 
 export const Footer = () => {
   return (
