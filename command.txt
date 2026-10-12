@@ -1,0 +1,26 @@
+- 프론트 -
+npx create-next-app@latest mes-frontend --typescript --eslint --app --src-dir --import-alias "@/*"
+npm install bootstrap react-bootstrap
+npm install styled-components
+npm install -D @types/styled-components
+npm install @js-temporal/polyfill
+npm install korean-lunar-calendar
+
+- 백엔드 -
+mkdir mes-backend && cd mes-backend
+npm init -y
+npm install -D typescript ts-node-dev @types/node @types/express @types/cors
+npx tsc --init
+
+오라클 통신용 공식 드라이버
+npm install express cors dotenv reflect-metadata typeorm oracledb
+
+npm install -D nodemon ts-node
+npm install -D tsx
+
+ORACLE DB 명령
+ALTER SESSION SET "_ORACLE_SCRIPT"=TRUE;
+CREATE USER "MES_USR" IDENTIFIED BY "1234";
+GRANT CONNECT TO "MES_USR";
+GRANT RESOURCE TO "MES_USR";
+ALTER USER MES_USR DEFAULT TABLESPACE USERS QUOTA UNLIMITED ON USERS;
