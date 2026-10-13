@@ -110,4 +110,4 @@ export class Member {
     name: "UPDATED_AT",
   })
   updatedAt!: Date;
-}
+};

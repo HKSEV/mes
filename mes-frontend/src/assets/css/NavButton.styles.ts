@@ -52,6 +52,7 @@ export const HeaderLogoutButton = styled.button`
   font-size: 0.875rem;
   cursor: pointer;
   font-weight: bold;
+  white-space: nowrap;
   transition: background-color 0.2s ease-in-out;
   &:hover { background-color: #DC2626; }
 `;
@@ -76,7 +77,7 @@ export const HeaderMobileNav = styled.nav<{$isOpen: boolean}>`
   width: 100%;
   background-color: #334155;
   padding: ${({$isOpen}) => ($isOpen ? "16px 24px" : "0 24px")};
-  max-height: ${({$isOpen}) => ($isOpen ? "320px" : "0")};
+  max-height: ${({$isOpen}) => ($isOpen ? "368px" : "0")};
   overflow: hidden;
   transition: all 0.3s ease-in-out;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -90,7 +91,7 @@ export const HeaderMobileNav = styled.nav<{$isOpen: boolean}>`
     font-weight: 500;
   }
 
-  & > a:nth-child(5) {
+  & > a:nth-child(6) {
     color: #93C5FD
   }
 

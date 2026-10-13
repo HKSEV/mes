@@ -9,16 +9,19 @@ export const SideBar = () => {
         <S.SectionTitle>MES 업무</S.SectionTitle>
         <S.MenuList>
           <li>
-            <S.MenuItem href="/production">생산관리</S.MenuItem>
+            <S.MenuItem href="/admin/process">라인 공정 제어</S.MenuItem>
           </li>
           <li>
-            <S.MenuItem href="/material">자재관리</S.MenuItem>
+            <S.MenuItem href="/admin/components">핵심 부품 SCM</S.MenuItem>
           </li>
           <li>
-            <S.MenuItem href="/quality">품질관리</S.MenuItem>
+            <S.MenuItem href="/admin/quality">비전 품질 검사</S.MenuItem>
           </li>
           <li>
-            <S.MenuItem href="/equipment">설비관리</S.MenuItem>
+            <S.MenuItem href="/admin/cleanroom">클린룸 & 설비</S.MenuItem>
+          </li>
+          <li>
+            <S.MenuItem href="/admin/analytics">실시간 통합 관제</S.MenuItem>
           </li>
         </S.MenuList>
       </S.MenuSection>

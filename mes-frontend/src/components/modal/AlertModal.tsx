@@ -9,9 +9,9 @@ interface AlertModalProps {
   onClose: () => void;
 };
 
-export const AlertModal = (
+export default function AlertModal(
   {isOpen, message, onClose}: AlertModalProps
-) => {
+) {
   const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {

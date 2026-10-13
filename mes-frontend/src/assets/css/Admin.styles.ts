@@ -1,12 +1,31 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import * as C from "./common/Common.styles";
 
 // 마이페이지
-export const MyPageWrapper = styled.div`
+export const AdminWrapper = styled.div`
   width: 100%;
   max-width: 860px;
   margin: 0 auto;
 `;
-export const MyPageHeader = styled.div`
+export const AdminGridWrapper = styled.div`
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+`;
+export const AdminGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 2rem;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+`;
+export const AdminGridColumn = styled.div`
+  ${C.FlexColumn}
+  gap: 2rem;
+`;
+export const AdminHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -18,41 +37,41 @@ export const MyPageHeader = styled.div`
     gap: 6px;
   }
 `;
-export const MyPageTitle = styled.h1`
+export const AdminTitle = styled.h1`
   color: #0F172A;
   font-size: 1.6rem;
   font-weight: 700;
   line-height: 1.3;
 `;
-export const MyPageSubtitle = styled.p`
+export const AdminSubtitle = styled.p`
   color: #64748B;
   font-size: 0.9rem;
   line-height: 1.5;
 `;
-export const MyPageCard = styled.section`
+export const AdminCard = styled.section`
   background-color: #FFF;
   border: 1px solid #E2E8F0;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
   overflow: hidden;
 `;
-export const MyPageCardHeader = styled.div`
+export const AdminCardHeader = styled.div`
   padding: 20px 24px;
   border-bottom: 1px solid #E2E8F0;
   background-color: #F8FAFC;
 `;
-export const MyPageCardTitle = styled.h2`
+export const AdminCardTitle = styled.h2`
   color: #1E293B;
   font-size: 1.05rem;
   font-weight: 700;
   margin-bottom: 4px;
 `;
-export const MyPageCardDescription = styled.p`
+export const AdminCardDescription = styled.p`
   color: #64748B;
   font-size: 0.85rem;
   line-height: 1.5;
 `;
-export const MyPageForm = styled.form`
+export const AdminForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -62,17 +81,17 @@ export const MyPageForm = styled.form`
     padding: 20px 16px;
   }
 `;
-export const MyPageFormGroup = styled.div`
+export const AdminFormGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
 `;
-export const MyPageLabel = styled.label`
+export const AdminLabel = styled.label`
   color: #334155;
   font-size: 0.875rem;
   font-weight: 600;
 `;
-export const MyPageInput = styled.input`
+export const AdminInput = styled.input`
   width: 100%;
   padding: 11px 14px;
   border: 1px solid #CBD5E1;
@@ -97,12 +116,12 @@ export const MyPageInput = styled.input`
     box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.15);
   }
 `;
-export const MyPageHint = styled.p`
+export const AdminHint = styled.p`
   color: #94A3B8;
   font-size: 0.78rem;
   line-height: 1.45;
 `;
-export const MyPageButton = styled.button`
+export const AdminButton = styled.button`
   width: auto;
   padding: 0.8rem;
   background-color: #4E73DF;
@@ -124,4 +143,21 @@ export const MyPageButton = styled.button`
     width: 100%;
     align-self: stretch;
   }
+`;
+export const AdminLine = styled.div<{$isWarning?: boolean}>`
+  padding: 0.9rem;
+  border-bottom: 1px solid #DDD;
+  ${({$isWarning}) => ($isWarning && css`background-color: #FDEAEA;`)}
+`;
+export const StatusBadge = styled.span<{
+  $isRunning?: boolean, $isWarning?: boolean
+}>`
+  color: ${(props) => {
+    if (props.$isWarning)
+      return "#F00";
+    if (props.$isRunning !== undefined)
+      return props.$isRunning ? "#617A9C" : "#F00";
+    return "#617A9C";
+  }};
+  font-weight: bold;
 `;

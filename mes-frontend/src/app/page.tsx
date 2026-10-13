@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { AlertModal } from "@/components/modal/AlertModal";
+import AlertModal from "@/components/modal/AlertModal";
 import * as S from "@/assets/css/Style.styles";
 
 export default function Home() {
@@ -33,7 +33,7 @@ export default function Home() {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
         setModalMessage("로그인 성공!");
-        setNextRoute("/dashboard");
+        setNextRoute("/admin");
         // 로그인 성공 후 이동할 메인 페이지 (필요에 따라 수정)
         setIsModalOpen(true);
       };

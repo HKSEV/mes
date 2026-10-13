@@ -1,14 +1,18 @@
-import express = require("express");
-import cors = require("cors");
-const oracledb = require("oracledb");
-import bcrypt  = require("bcryptjs");
+const express = require("express");
+const cors = require("cors");
+const bcrypt  = require("bcryptjs");
 const nodemailer = require("nodemailer");
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { randomUUID } from "crypto";
-import dotenv = require("dotenv");
+const dotenv = require("dotenv");
 
 import { AppDataSource } from "./config/db";
 import { Member } from "./entities/Member";
+import { ProcessLine } from "./entities/ProcessLine";
+import { ComponentSCM } from "./entities/ComponentSCM";
+import { QualityInspection } from "./entities/QualityInspection";
+import { Equipment } from "./entities/Equipment";
+import { ProductionRecord } from "./entities/ProductionRecord";
 
 dotenv.config();
 
@@ -63,8 +67,9 @@ declare global {
   }
 };
 
+// 멤버 관리
 // 회원가입 API
-app.post("/api/auth/register", async (req, res) => {
+app.post("/api/auth/register", async (req: any, res: any) => {
   try {
     const {
       firstName,
@@ -121,9 +126,8 @@ app.post("/api/auth/register", async (req, res) => {
     });
   };
 });
-
 // 로그인 API
-app.post("/api/auth/login", async (req, res) => {
+app.post("/api/auth/login", async (req: any, res: any) => {
   try {
     const {email, password} = req.body;
     if (!email || !password)
@@ -143,7 +147,7 @@ app.post("/api/auth/login", async (req, res) => {
     const token = jwt.sign(
       { id: member.id, email: member.email },
       JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "8h" }
     );
     
     res.status(200).json({
@@ -164,9 +168,8 @@ app.post("/api/auth/login", async (req, res) => {
     });
   };
 });
-
 // 비밀번호 찾기 API
-app.post("/api/auth/forgot-password", async (req, res) => {
+app.post("/api/auth/forgot-password", async (req: any, res: any) => {
   try {
     // 메일 발송 설정
     const mailSender = nodemailer.createTransport({
@@ -226,11 +229,225 @@ app.post("/api/auth/forgot-password", async (req, res) => {
   };
 });
 
-app.get("/api/member/profile", verifyToken, async (req, res) => {
-  return res.status(200).json({
-    success: true,
-    member: req.member
-  });
+// 라인 공정 제어 API
+app.get("/api/process/lines", verifyToken, async (req: any, res: any) => {
+  try {
+    const lineRepo = AppDataSource.getRepository(ProcessLine);
+    const lines = await lineRepo.find({order: {createdAt: "DESC"}});
+
+    res.status(200).json({
+      success: true,
+      data: lines
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "공정 라인 조회 중 오류가 발생했습니다."
+    });
+  };
+});
+app.post("/api/process/lines", verifyToken, async (req: any, res: any) => {
+  try {
+    const {lineName, processType, currentProduct, operator} = req.body;
+
+    const lineRepo = AppDataSource.getRepository(ProcessLine);
+    const newLine = await lineRepo.create({
+      lineName, processType, currentProduct, operator
+    });
+
+    await lineRepo.save(newLine);
+    res.status(201).json({
+      success: true,
+      message: "공정 라인 등록에 성공했습니다."
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "공정 라인 등록 중 오류가 발생했습니다."
+    });
+  };
+});
+
+// 핵심 부품 SCM API
+app.get("/api/scm/components", verifyToken, async (req: any, res: any) => {
+  try {
+    const componentRepo = AppDataSource.getRepository(ComponentSCM);
+    const components = await componentRepo.find({order: {createdAt: "DESC"}});
+
+    res.status(200).json({
+      success: true,
+      data: components
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "SCM 자재 조회 중 오류가 발생했습니다."
+    });
+  };
+});
+app.post("/api/scm/components", verifyToken, async (req: any, res: any) => {
+  try {
+    const {
+      componentName,
+      category,
+      stockQuantity,
+      minThreshold,
+      supplier
+    } = req.body;
+    const status = stockQuantity <= minThreshold ? "WARNING" : "NORMAL";
+
+    const componentRepo = AppDataSource.getRepository(ComponentSCM);
+    const newComponent = await componentRepo.create({
+      componentName,
+      category,
+      stockQuantity,
+      minThreshold,
+      supplier,
+      status
+    });
+
+    await componentRepo.save(newComponent);
+    res.status(201).json({
+      success: true,
+      data: newComponent
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "SCM 자재 등록 중 오류가 발생했습니다."
+    });
+  };
+});
+
+// 비전 품질 검사 API
+app.get("/api/quality/inspections", verifyToken, async (req: any, res: any) => {
+  try {
+    const inspectionRepo = AppDataSource.getRepository(QualityInspection);
+    const inspections = await inspectionRepo.find({
+      take: 50,
+      order: {inspectedAt: "DESC"},
+    });
+
+    res.status(200).json({
+      success: true,
+      data: inspections
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "품질 검사 이력 조회 중 오류가 발생했습니다."
+    });
+  };
+});
+app.post("/api/quality/inspections", verifyToken, async (req: any, res: any) => {
+  try {
+    const {
+      serialNumber,
+      inspectionType,
+      result,
+      defectReason,
+      inspector
+    } = req.body;
+
+    const inspectionRepo = AppDataSource.getRepository(QualityInspection);
+    const newInspection = await inspectionRepo.create({
+      serialNumber,
+      inspectionType,
+      result,
+      defectReason,
+      inspector
+    });
+
+    await inspectionRepo.save(newInspection);
+    res.status(201).json({
+      success: true,
+      data: newInspection
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "품질 검사 결과 등록 중 오류가 발생했습니다."
+    });
+  };
+});
+
+// 클린룸 및 설비 제어 API
+app.get("/api/equipment/status", verifyToken, async (req: any, res: any) => {
+  try {
+    const equipmentRepo = AppDataSource.getRepository(Equipment);
+    const equipments = await equipmentRepo.find({order: {createdAt: "DESC"}});
+
+    res.status(200).json({
+      success: true,
+      data: equipments
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "설비 상태 조회 중 오류가 발생했습니다."
+    });
+  };
+});
+app.post("/api/equipment/status", verifyToken, async (req: any, res: any) => {
+  try {
+    const {equipmentName, cleanroomZone, temperature} = req.body;
+
+    const equipmentRepo = AppDataSource.getRepository(Equipment);
+    const newEquipment = await equipmentRepo.create({});
+
+    await equipmentRepo.save(newEquipment);
+    res.status(201).json({
+      success: true,
+      data: newEquipment
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "설비 상태 등록 중 오류가 발생했습니다."
+    });
+  };
+});
+
+// 실시간 통합 관제(생산 실적 및 수율) API
+app.get("/api/analytics/records", verifyToken, async (req: any, res: any) => {
+  try {
+    const recordRepo = AppDataSource.getRepository(ProductionRecord);
+    const records = await recordRepo.find({order: {recordedAt: "DESC"}});
+
+    res.status(200).json({
+      success: true,
+      data: records
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "통합 관제 데이터 조회 중 오류가 발생했습니다."
+    });
+  };
+});
+app.post("/api/analytics/records", verifyToken, async (req: any, res: any) => {
+  try {
+    const {lineName, targetCount, actualCount, defectCount} = req.body;
+    const total = actualCount + defectCount;
+    const yieldRate = total > 0
+    ? Number(((actualCount / total) * 100).toFixed(2)) : 100.0;
+
+    const recordRepo = AppDataSource.getRepository(ProductionRecord);
+    const newRecord = await recordRepo.create({
+      lineName, targetCount, actualCount, defectCount, yieldRate
+    });
+
+    await recordRepo.save(newRecord);
+    res.status(201).json({
+      success: true,
+      data: newRecord
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "통합 관제 데이터 등록 중 오류가 발생했습니다."
+    });
+  };
 });
 
 AppDataSource.initialize()

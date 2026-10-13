@@ -35,28 +35,28 @@ export default function MyPage() {
   };
 
   return (
-    <S.MyPageWrapper>
-      <S.MyPageHeader>
+    <S.AdminWrapper>
+      <S.AdminHeader>
         <div>
-          <S.MyPageTitle>마이페이지</S.MyPageTitle>
-          <S.MyPageSubtitle>
+          <S.AdminTitle>마이페이지</S.AdminTitle>
+          <S.AdminSubtitle>
             계정 정보를 관리하고 비밀번호를 변경할 수 있습니다.
-          </S.MyPageSubtitle>
+          </S.AdminSubtitle>
         </div>
-      </S.MyPageHeader>
-      <S.MyPageCard>
-        <S.MyPageCardHeader>
-          <S.MyPageCardTitle>비밀번호 변경</S.MyPageCardTitle>
-          <S.MyPageCardDescription>
+      </S.AdminHeader>
+      <S.AdminCard>
+        <S.AdminCardHeader>
+          <S.AdminCardTitle>비밀번호 변경</S.AdminCardTitle>
+          <S.AdminCardDescription>
             현재 비밀번호를 확인한 후 새로운 비밀번호로 변경합니다.
-          </S.MyPageCardDescription>
-        </S.MyPageCardHeader>
-        <S.MyPageForm onSubmit={handleChangePassword}>
-          <S.MyPageFormGroup>
-            <S.MyPageLabel htmlFor="oldPassword">
+          </S.AdminCardDescription>
+        </S.AdminCardHeader>
+        <S.AdminForm onSubmit={handleChangePassword}>
+          <S.AdminFormGroup>
+            <S.AdminLabel htmlFor="oldPassword">
               기존(또는 임시) 비밀번호
-            </S.MyPageLabel>
-            <S.MyPageInput
+            </S.AdminLabel>
+            <S.AdminInput
             id="oldPassword"
             type="password"
             placeholder="기존 비밀번호를 입력하세요."
@@ -64,12 +64,12 @@ export default function MyPage() {
             onChange={(e) => setOldPassword(e.target.value)}
             autoComplete="current-password"
             required/>
-          </S.MyPageFormGroup>
-          <S.MyPageFormGroup>
-            <S.MyPageLabel htmlFor="newPassword">
+          </S.AdminFormGroup>
+          <S.AdminFormGroup>
+            <S.AdminLabel htmlFor="newPassword">
               새 비밀번호
-            </S.MyPageLabel>
-            <S.MyPageInput
+            </S.AdminLabel>
+            <S.AdminInput
             id="newPassword"
             type="password"
             placeholder="새 비밀번호를 입력하세요."
@@ -77,15 +77,15 @@ export default function MyPage() {
             onChange={(e) => setNewPassword(e.target.value)}
             autoComplete="new-password"
             required/>
-            <S.MyPageHint>
+            <S.AdminHint>
               보안을 위해 기존 비밀번호와 다른 비밀번호를 사용해주세요.
-            </S.MyPageHint>
-          </S.MyPageFormGroup>
-          <S.MyPageButton type="submit">
+            </S.AdminHint>
+          </S.AdminFormGroup>
+          <S.AdminButton type="submit">
             비밀번호 변경
-          </S.MyPageButton>
-        </S.MyPageForm>
-      </S.MyPageCard>
-    </S.MyPageWrapper>
+          </S.AdminButton>
+        </S.AdminForm>
+      </S.AdminCard>
+    </S.AdminWrapper>
   );
 };
