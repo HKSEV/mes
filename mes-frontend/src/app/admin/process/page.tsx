@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import useModal from "@/components/contexts/ModalContext";
 import * as S from "@/assets/css/Style.styles";
 
 interface ProcessLine {
@@ -14,6 +15,7 @@ interface ProcessLine {
 };
 
 export default function ProcessPage() {
+  const {openAlertModal} = useModal();
   const [lines, setLines] = useState<ProcessLine[]>([]);
   const [formData, setFormData] = useState({
     lineName: "",
@@ -56,7 +58,7 @@ export default function ProcessPage() {
         headers: {Authorization: `Bearer ${token}`}
       });
       if (response.data.success) {
-        alert("공정 라인이 등록되었습니다.");
+        openAlertModal("공정 라인이 등록되었습니다.");
         setFormData({
           lineName: "",
           processType: "",
@@ -66,7 +68,7 @@ export default function ProcessPage() {
         fetchData();
       };
     } catch (err) {
-      alert("등록 실패");
+      openAlertModal("등록 실패");
     };
   };
 

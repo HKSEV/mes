@@ -4,10 +4,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
+import useModal from "./contexts/ModalContext";
 import * as S from "@/assets/css/NavButton.styles";
 
 export const Header = () => {
   const router = useRouter();
+  const {openAlertModal} = useModal();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -15,11 +17,14 @@ export const Header = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    delete axios.defaults.headers.common["Authorization"];
-    document.cookie = "login_token=true; path=/; max-age=0;";
-    alert("로그아웃 되었습니다.");
-    router.push("/")
+    openAlertModal("로그아웃 하시겠습니까?", () => {
+      localStorage.removeItem("token");
+      delete axios.defaults.headers.common["Authorization"];
+      document.cookie = "login_token=true; path=/; max-age=0;";
+      setTimeout(() => {
+        openAlertModal("로그아웃 되었습니다.", () => router.push("/"));
+      }, 200);
+    });
   };
 
   return (

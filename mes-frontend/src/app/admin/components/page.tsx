@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import useModal from "@/components/contexts/ModalContext";
 import * as S from "@/assets/css/Style.styles";
 
 interface ComponentItem {
@@ -15,6 +16,7 @@ interface ComponentItem {
 };
 
 export default function ScmPage() {
+  const {openAlertModal} = useModal();
   const [components, setComponents] = useState<ComponentItem[]>([]);
   const [formData, setFormData] = useState({
     componentName: "",
@@ -58,7 +60,7 @@ export default function ScmPage() {
         headers: {Authorization: `Bearer ${token}`}
       });
       if (response.data.success) {
-        alert("자재 정보가 등록되었습니다.");
+        openAlertModal("자재 정보가 등록되었습니다.");
         setFormData({
           componentName: "",
           category: "",
@@ -69,7 +71,7 @@ export default function ScmPage() {
         fetchData();
       };
     } catch (err) {
-      alert("등록 실패");
+      openAlertModal("등록 실패");
     };
   };
 
