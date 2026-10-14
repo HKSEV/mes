@@ -4,95 +4,174 @@ import * as C from "./common/Common.styles";
 
 // 헤더
 export const HeaderContainer = styled.header`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 1.5rem;
+  ${C.FlexBetween}
+  gap: 1.25rem;
+  width: 100%;
+  min-width: 0;
   height: 4rem;
+  padding: 0 clamp(1rem, 2vw, 1.5rem);
+  box-sizing: border-box;
   background-color: #1E293B;
   color: #FFF;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  ${C.BoxShadow}
   position: relative;
+  z-index: 1000;
 `;
 export const HeaderLogo = styled.nav`
-  font-size: 1.5rem;
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-size: clamp(1rem, 1.35vw, 1.35rem);
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.2px;
   cursor: pointer;
+
+  @media (max-width: 480px) {
+    font-size: 0.95rem;
+    letter-spacing: 0;
+  }
 `;
 export const HeaderDesktopNav = styled.nav`
-  display: flex;
-  gap: 2.285rem;
+  ${C.FlexCenter}
+  gap: clamp(0.5rem, 1.2vw, 1.25rem);
+  flex: 1;
+  min-width: 0;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1100px) {
     display: none;
   }
 `;
 export const HeaderNavLink = styled(Link)`
+${C.InlineFlexCenter}
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding: 0.5rem 0;
   color: #CBD5E1;
+  font-size: clamp(0.75rem, 0.85vw, 0.875rem);
   font-weight: 500;
-  transition: color 0.2s ease-in-out;
+  text-decoration: none;
+  ${C.TransitionAll}
   &:hover { color: #FFF; }
 `;
 export const HeaderUserSection = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
+  ${C.FlexRight}
+  gap: 0.75rem;
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-size: 0.875rem;
 
-  @media (max-width: 768px) {
+  a {
+    color: #FFF;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 1100px) {
     display: none;
   }
 `;
 export const HeaderLogoutButton = styled.button`
+${C.InlineFlexCenter}
+  flex-shrink: 0;
+  white-space: nowrap;
   background-color: #EF4444;
   color: #FFF;
   border: none;
-  padding: 6px 16px;
-  border-radius: 4px;
-  font-size: 0.875rem;
-  cursor: pointer;
+  padding: 0.45rem 0.875rem;
+  border-radius: 6px;
+  font-size: 0.8125rem;
   font-weight: bold;
-  white-space: nowrap;
-  transition: background-color 0.2s ease-in-out;
-  &:hover { background-color: #DC2626; }
+  cursor: pointer;
+  ${C.TransitionAll}
+  
+  &:hover {
+    background-color: #DC2626;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #FFF;
+    outline-offset: 2px;
+  }
 `;
 export const HeaderMobileMenuToggle = styled.button`
   display: none;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
   background-color: transparent;
   border: none;
+  border-radius: 6px;
   color: #FFF;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
+  line-height: 1;
   cursor: pointer;
+  ${C.TransitionAll}
 
-  @media (max-width: 768px) {
-    display: block;
+  &:hover {
+    background-color: #334155;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #93C5FD;
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 1100px) {
+    display: inline-flex;
   }
 `;
 export const HeaderMobileNav = styled.nav<{$isOpen: boolean}>`
-  display: flex;
-  flex-direction: column;
+  ${C.FlexColumn}
   position: absolute;
-  top: 64px;
+  top: 100%;
   left: 0;
+  right: 0;
   width: 100%;
+  box-sizing: border-box;
   background-color: #334155;
-  padding: ${({$isOpen}) => ($isOpen ? "16px 24px" : "0 24px")};
-  max-height: ${({$isOpen}) => ($isOpen ? "368px" : "0")};
+  padding: ${({$isOpen}) => ($isOpen ? "0.5rem 1.25rem 1rem" : "0 1.25rem")};
+  max-height: ${({$isOpen}) => ($isOpen ? "400px" : "0")};
+  opacity: ${({$isOpen}) => ($isOpen ? 1 : 0)};
+  visibility: ${({$isOpen}) => ($isOpen ? "visible" : "hidden")};
   overflow: hidden;
-  transition: all 0.3s ease-in-out;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition:
+    max-height 0.25s ease,
+    opacity 0.2s ease,
+    padding 0.25s ease,
+    visibility 0.25s ease;
+  ${C.BoxShadow}
   z-index: 9999999;
 
   & > a {
-    padding: 12px 0;
+    ${C.FlexCenter}
+    min-height: 2.75rem;
+    box-sizing: border-box;
+    padding: 0.75rem 0;
     border-bottom: 1px solid #475569;
-    color: #FFF;
+    color: #CBD5E1;
     text-decoration: none;
+    white-space: nowrap;
+    font-size: 0.9375rem;
     font-weight: 500;
+    ${C.TransitionAll}
+  }
+
+  & > a:hover {
+    color: #FFF;
   }
 
   & > a:nth-child(6) {
     color: #93C5FD
+  }
+
+  & > a:nth-child(6):hover {
+    color: #BFDBFE;
   }
 
   & > a:last-child {
@@ -100,7 +179,11 @@ export const HeaderMobileNav = styled.nav<{$isOpen: boolean}>`
     color: #FCA5A5
   }
 
-  @media (min-width: 768px) {
+  & > a:last-child:hover {
+    color: #FEE2E2;
+  }
+
+  @media (min-width: 1101px) {
     display: none;
   }
 }

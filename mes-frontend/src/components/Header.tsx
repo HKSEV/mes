@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter ,usePathname } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
 import useModal from "./contexts/ModalContext";
@@ -9,6 +9,7 @@ import * as S from "@/assets/css/NavButton.styles";
 
 export const Header = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const {openAlertModal} = useModal();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -23,7 +24,7 @@ export const Header = () => {
       document.cookie = "login_token=true; path=/; max-age=0;";
       setTimeout(() => {
         openAlertModal("로그아웃 되었습니다.", () => router.push("/"));
-      }, 200);
+      }, 100);
     });
   };
 
@@ -59,13 +60,42 @@ export const Header = () => {
 
       {/* 모바일 드롭다운 메뉴 */}
       <S.HeaderMobileNav $isOpen={isMobileMenuOpen}>
-        <Link href="/admin/process">라인 공정 제어</Link>
-        <Link href="/admin/components">핵심 부품 SCM</Link>
-        <Link href="/admin/quality">비전 품질 검사</Link>
-        <Link href="/admin/cleanroom">클린룸 & 설비</Link>
-        <Link href="/admin/analytics">실시간 통합 관제</Link>
-        <Link href="/admin/mypage">내 정보</Link>
-        <Link href="/">로그아웃</Link>
+        <Link
+        href="/admin/process"
+        onClick={() => setIsMobileMenuOpen(false)}>
+          라인 공정 제어
+        </Link>
+        <Link
+        href="/admin/components"
+        onClick={() => setIsMobileMenuOpen(false)}>
+          핵심 부품 SCM
+        </Link>
+        <Link
+        href="/admin/quality"
+        onClick={() => setIsMobileMenuOpen(false)}>
+          비전 품질 검사
+        </Link>
+        <Link
+        href="/admin/cleanroom"
+        onClick={() => setIsMobileMenuOpen(false)}>
+          클린룸 & 설비
+        </Link>
+        <Link
+        href="/admin/analytics"
+        onClick={() => setIsMobileMenuOpen(false)}>
+          실시간 통합 관제
+        </Link>
+        <Link
+        href="/admin/mypage"
+        onClick={() => setIsMobileMenuOpen(false)}>
+          내 정보
+        </Link>
+        <Link
+        href="/"
+        onClick={(e) => {
+          e.preventDefault();
+          handleLogout();
+        }}>로그아웃</Link>
       </S.HeaderMobileNav>
     </S.HeaderContainer>
   );

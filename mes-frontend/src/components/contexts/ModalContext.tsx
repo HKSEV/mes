@@ -28,6 +28,7 @@ interface ModalContextType {
     schedules: Schedule[],
     setSchedules?: React.Dispatch<React.SetStateAction<Schedule[]>>
   ) => void;
+  updateScheduleModal: (schedules: Schedule[]) => void;
   openAlertModal: (
     message: string,
     onConfirm?: () => void,
@@ -64,6 +65,10 @@ export function ModalProvider({children}: {children: ReactNode}) {
       isOpen: true, month, selectedDate, schedules, setSchedules
     });
   };
+  // 갱신
+  const updateScheduleModal = (schedules: Schedule[]) => {
+    setScheduleModalConfig((prev) => ({...prev, schedules}));
+  };
 
   // AlertModal 열기 함수
   const openAlertModal = (
@@ -78,6 +83,7 @@ export function ModalProvider({children}: {children: ReactNode}) {
     value={{
       scheduleModalConfig,
       alertModalConfig,
+      updateScheduleModal,
       openScheduleModal,
       openAlertModal
     }}>

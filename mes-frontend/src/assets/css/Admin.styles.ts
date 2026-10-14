@@ -17,7 +17,7 @@ export const AdminGrid = styled.div`
   grid-template-columns: 1fr 1.8fr;
   gap: 2rem;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1100px) {
     grid-template-columns: repeat(1, 1fr);
   }
 `;
@@ -53,7 +53,8 @@ export const AdminCard = styled.section`
   border: 1px solid #E2E8F0;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
-  overflow: hidden;
+  overflow: auto;
+  white-space: nowrap;
 `;
 export const AdminCardHeader = styled.div`
   padding: 20px 24px;
@@ -75,8 +76,16 @@ export const AdminCardGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1400px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 1100px) {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 525px) {
+    grid-template-columns: repeat(1, 1fr);
   }
 `;
 export const AdminForm = styled.form`
@@ -155,7 +164,7 @@ export const AdminButton = styled.button`
     background-color: #2E59D9;
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     width: 100%;
     align-self: stretch;
   }

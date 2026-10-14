@@ -23,7 +23,7 @@ export default function Calendar({
   year?: number;
   month?: number;
 }) {
-  const {openScheduleModal} = useModal();
+  const {openScheduleModal, updateScheduleModal} = useModal();
   const [currentYear, setCurrentYear] = useState(year);
   const [currentMonth, setCurrentMonth] = useState(month);
   // 입력받은 연/월을 기준으로 Temporal 객체 생성
@@ -55,6 +55,10 @@ export default function Calendar({
   useEffect(() => {
     fetchHolidays(currentYear, currentMonth).then(setHolidays);
   }, [currentYear, currentMonth]);
+
+  useEffect(() => {
+    updateScheduleModal(schedules);
+  }, [schedules]);
 
   // 오늘 날짜 정보
   const today = Temporal.Now.plainDateISO();
@@ -88,9 +92,12 @@ export default function Calendar({
       $isSaturday={isSaturday}
       onClick={() => handleDayClick(d)}>
         <span>{d}</span>
-        {holiday && <S.CalTooltip>{holiday.name}</S.CalTooltip>}
-        {holiday?.name === "성탄절" && <span>🎄</span>}
-        {holiday?.name.includes("추석") && <span>🌕</span>}
+        {holiday && (
+          <>
+            <S.CalTooltip>{holiday.name}</S.CalTooltip>
+            <span>{holiday.icon}</span>
+          </>
+        )}
         {hasSchedule && <S.ScheduleDot/>}
       </S.CalDayCell>
     );
