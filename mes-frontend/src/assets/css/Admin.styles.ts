@@ -14,7 +14,7 @@ export const AdminGridWrapper = styled.div`
 `;
 export const AdminGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
+  grid-template-columns: 1fr 1.8fr;
   gap: 2rem;
 
   @media (max-width: 1024px) {
@@ -71,6 +71,14 @@ export const AdminCardDescription = styled.p`
   font-size: 0.85rem;
   line-height: 1.5;
 `;
+export const AdminCardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
 export const AdminForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -82,9 +90,9 @@ export const AdminForm = styled.form`
   }
 `;
 export const AdminFormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
+  ${C.FlexColumn}
   gap: 8px;
+  flex: 1;
 `;
 export const AdminLabel = styled.label`
   color: #334155;
@@ -115,6 +123,14 @@ export const AdminInput = styled.input`
     border-color: #4E73DF;
     box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.15);
   }
+
+  &:disabled {
+    background-color: #F1F5F9;
+    color: #94A3B8;
+    border-color: #E2E8F0;
+    box-shadow: none;
+    opacity: 1;
+  }
 `;
 export const AdminHint = styled.p`
   color: #94A3B8;
@@ -144,15 +160,27 @@ export const AdminButton = styled.button`
     align-self: stretch;
   }
 `;
-export const AdminLine = styled.div<{$isWarning?: boolean}>`
+export const AdminLine = styled.div<{
+  $isWarning?: boolean, $isPass?: boolean
+}>`
   padding: 0.9rem;
-  border-bottom: 1px solid #DDD;
-  ${({$isWarning}) => ($isWarning && css`background-color: #FDEAEA;`)}
+  margin: 0.3rem;
+  border: 1px solid #DDD;
+  border-radius: 0.5rem;
+  background-color: ${(props) => {
+    if (props.$isPass !== undefined)
+      return props.$isPass ? "#F0FFF4" : "#FFF5F5"
+    if (props.$isWarning)
+      return "#FFF5F5";
+    return "#F9F9F9";
+  }};
 `;
 export const StatusBadge = styled.span<{
-  $isRunning?: boolean, $isWarning?: boolean
+  $isRunning?: boolean, $isWarning?: boolean, $isPass?: boolean
 }>`
   color: ${(props) => {
+    if (props.$isPass !== undefined)
+      return props.$isPass ? "#0F0" : "#F00"
     if (props.$isWarning)
       return "#F00";
     if (props.$isRunning !== undefined)
@@ -160,4 +188,8 @@ export const StatusBadge = styled.span<{
     return "#617A9C";
   }};
   font-weight: bold;
+`;
+export const AdminSelectGroup = styled.div`
+  ${C.FlexBetween}
+  gap: 10px;
 `;

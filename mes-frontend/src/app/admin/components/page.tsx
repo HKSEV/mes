@@ -121,30 +121,32 @@ export default function ScmPage() {
                 onChange={handleChange}
                 required/>
               </S.AdminFormGroup>
-              <S.AdminFormGroup>
-                <S.AdminLabel htmlFor="stockQuantity">
-                  현재 재고 수량
-                </S.AdminLabel>
-                <S.AdminInput
-                id="stockQuantity"
-                type="number"
-                name="stockQuantity"
-                value={formData.stockQuantity}
-                onChange={handleChange}
-                required/>
-              </S.AdminFormGroup>
-              <S.AdminFormGroup>
-                <S.AdminLabel htmlFor="minThreshold">
-                  안전 재고 임계값
-                </S.AdminLabel>
-                <S.AdminInput
-                id="minThreshold"
-                type="number"
-                name="minThreshold"
-                value={formData.minThreshold}
-                onChange={handleChange}
-                required/>
-              </S.AdminFormGroup>
+              <S.AdminSelectGroup>
+                <S.AdminFormGroup>
+                  <S.AdminLabel htmlFor="stockQuantity">
+                    현재 재고 수량
+                  </S.AdminLabel>
+                  <S.AdminInput
+                  id="stockQuantity"
+                  type="number"
+                  name="stockQuantity"
+                  value={formData.stockQuantity}
+                  onChange={handleChange}
+                  required/>
+                </S.AdminFormGroup>
+                <S.AdminFormGroup>
+                  <S.AdminLabel htmlFor="minThreshold">
+                    안전 재고 임계값
+                  </S.AdminLabel>
+                  <S.AdminInput
+                  id="minThreshold"
+                  type="number"
+                  name="minThreshold"
+                  value={formData.minThreshold}
+                  onChange={handleChange}
+                  required/>
+                </S.AdminFormGroup>
+              </S.AdminSelectGroup>
               <S.AdminFormGroup>
                 <S.AdminLabel htmlFor="supplier">
                   협력사 (Supplier)
@@ -168,21 +170,23 @@ export default function ScmPage() {
             <S.AdminCardHeader>
               <S.AdminCardTitle>핵심 부품 공급망(SCM) 현황</S.AdminCardTitle>
             </S.AdminCardHeader>
-            {components.map((component) => {
-              const isWarning = component.status === "WARNING";
-              return (
-              <S.AdminLine key={component.id} $isWarning={isWarning}>
-                <strong>{component.componentName}</strong>
-                [{component.category}] - 공급사: {component.supplier}
-                <p>
-                  재고: {component.stockQuantity}개 
-                  (안전기준: {component.minThreshold}) | 상태: {" "}
-                  <S.StatusBadge $isWarning={isWarning}>
-                    {component.status}
-                  </S.StatusBadge>
-                </p>
-              </S.AdminLine>
-            )})}
+            <S.AdminCardGrid>
+              {components.map((component) => {
+                const isWarning = component.status === "WARNING";
+                return (
+                <S.AdminLine key={component.id} $isWarning={isWarning}>
+                  <strong>{component.componentName}</strong><br/>
+                  [{component.category}] - 공급사: {component.supplier}
+                  <p>
+                    재고: {component.stockQuantity}개 
+                    (안전기준: {component.minThreshold})<br/>상태: {" "}
+                    <S.StatusBadge $isWarning={isWarning}>
+                      {component.status}
+                    </S.StatusBadge>
+                  </p>
+                </S.AdminLine>
+              )})}
+            </S.AdminCardGrid>
           </S.AdminCard>
         </S.AdminGridColumn>
       </S.AdminGrid>

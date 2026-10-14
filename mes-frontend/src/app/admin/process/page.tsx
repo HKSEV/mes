@@ -155,15 +155,17 @@ export default function ProcessPage() {
             <S.AdminCardHeader>
               <S.AdminCardTitle>iPhone Duo 라인 가동 현황</S.AdminCardTitle>
             </S.AdminCardHeader>
-            {lines.map((line) => (
-              <S.AdminLine key={line.id}>
-                <strong>{line.lineName}</strong>
-                [{line.processType}] - 상태:{" "}
-                <S.StatusBadge $isRunning={line.status === "RUNNING"}>
-                  {line.status}
-                </S.StatusBadge>
-              </S.AdminLine>
-            ))}
+            <S.AdminCardGrid>
+              {lines.map((line) => (
+                <S.AdminLine key={line.id}>
+                  <strong>{line.lineName}</strong><br/>
+                  [{line.processType}]<br/>상태:{" "}
+                  <S.StatusBadge $isRunning={line.status === "RUNNING"}>
+                    {line.status}
+                  </S.StatusBadge>
+                </S.AdminLine>
+              ))}
+            </S.AdminCardGrid>
           </S.AdminCard>
         </S.AdminGridColumn>
       </S.AdminGrid>

@@ -390,10 +390,12 @@ app.get("/api/equipment/status", verifyToken, async (req: any, res: any) => {
 });
 app.post("/api/equipment/status", verifyToken, async (req: any, res: any) => {
   try {
-    const {equipmentName, cleanroomZone, temperature} = req.body;
+    const {equipmentName, cleanroomZone, temperature, humidity} = req.body;
 
     const equipmentRepo = AppDataSource.getRepository(Equipment);
-    const newEquipment = await equipmentRepo.create({});
+    const newEquipment = await equipmentRepo.create({
+      equipmentName, cleanroomZone, temperature, humidity
+    });
 
     await equipmentRepo.save(newEquipment);
     res.status(201).json({
